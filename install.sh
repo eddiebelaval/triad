@@ -102,7 +102,7 @@ echo ""
 
 # Install templates
 echo "Templates:"
-for tmpl in vision spec; do
+for tmpl in vision spec building roadmap milestone-tasklists tickets milestone-checklist; do
   src="${SCRIPT_DIR}/templates/${tmpl}.md"
   dst="${CLAUDE_DIR}/doc-templates/${tmpl}.md"
   if [ -f "$src" ]; then
@@ -128,4 +128,8 @@ echo "  /debt               Tech + product debt scan"
 echo "  /onboard            New contributor guide"
 echo "  /morning            Daily brief with triangle health"
 echo ""
-echo "Start: Create VISION.md + SPEC.md at your project root, or run /reconcile init"
+echo "Templates in ~/.claude/doc-templates/:"
+echo "  Triad:     vision.md, spec.md, building.md"
+echo "  Execution: roadmap.md, milestone-tasklists.md, tickets.md, milestone-checklist.md"
+echo ""
+echo "Start: Create VISION.md + SPEC.md + BUILDING.md at your project root, or run /reconcile init"

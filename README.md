@@ -1,6 +1,6 @@
 # Triad
 
-A three-document system that replaces your dead PRD. Three source-of-truth documents produce six computed outputs. Nothing goes stale because nothing is stored separately.
+A documentation system that replaces your dead PRD. Three source-of-truth documents produce six computed outputs. An optional execution layer turns the gap between vision and reality into agent-executable work.
 
 ```
         VISION.md
@@ -19,6 +19,8 @@ SPEC.md -------- BUILDING.md
 **BUILDING.md** -- How it got here. The build journal.
 
 The gap between VISION and SPEC is the roadmap. You don't maintain a roadmap. You don't maintain a changelog. You don't maintain an onboarding guide. The triangle produces them.
+
+For human-only teams, the triangle is sufficient. For agent-driven teams, the **execution layer** materializes that gap into work an AI agent can pick up and execute autonomously.
 
 ---
 
@@ -52,6 +54,48 @@ Maps every recent BUILDING entry to VISION pillars:
 - Entries that don't map to any pillar = **scope creep candidates**
 - Pillars with zero BUILDING momentum = **neglected priorities**
 - Entries that contradict the Anti-Vision = **drift warnings**
+
+---
+
+## The Execution Layer (Optional)
+
+The derivation engine computes ephemeral views. The execution layer materializes one of those views -- the roadmap -- into persistent, agent-executable documents. Use this when AI agents need to pick up work autonomously.
+
+```
+TRIAD (what is this?)          EXECUTION (what do we do about it?)
+  VISION.md                      ROADMAP.md
+  SPEC.md           -->          MILESTONE_TASKLISTS.md
+  BUILDING.md                    TICKETS.md
+                                 MILESTONE_N_CHECKLIST.md
+```
+
+Four documents, four zoom levels:
+
+| Doc | Role | Audience |
+|---|---|---|
+| `ROADMAP.md` | Strategy, sequencing, gates, planning principles | Humans and agents |
+| `MILESTONE_TASKLISTS.md` | Tactical task lists per milestone with verification criteria | Humans and agents |
+| `TICKETS.md` | Agent-executable work units with status, priority, dependencies, file targets | Agents (primary), humans |
+| `MILESTONE_N_CHECKLIST.md` | Deep-dive for the current milestone with file-level targets and line numbers | Agents |
+
+### How it works
+
+An agent session opens `TICKETS.md`, reads the status of every ticket, finds the highest-priority unblocked ticket, marks it `in_progress`, does the work, verifies it, marks it `done`, and updates affected docs. No human intervention required for routine execution.
+
+### When you need it
+
+- You use AI coding agents (Claude Code, Codex, etc.) for implementation
+- You run autonomous loops (`/ralph`, overnight builds)
+- Multiple agent sessions need to coordinate without conflicts
+- You want execution state that persists across sessions
+
+### When you don't
+
+- Human-only teams: the derivation engine (`/roadmap`) is sufficient
+- Small projects: the triangle alone provides enough guidance
+- Exploration phase: you don't know enough to write milestones yet
+
+Templates for all four documents are in `templates/`.
 
 ---
 
@@ -118,13 +162,17 @@ cp -r triad/skills/* ~/.claude/skills/
 
 ### Option 3: Start from scratch
 
-Create two files at your project root:
+Create three files at your project root:
 
 **VISION.md** -- Answer: "Why does this exist?" List 3-7 commitments (pillars). Mark each REALIZED, PARTIAL, or UNREALIZED. Add what it must never become.
 
 **SPEC.md** -- Answer: "What can this product do TODAY?" List every capability in present tense. Write a testable assertion for each.
 
-The gap between those two documents is your roadmap. The triangle is alive.
+**BUILDING.md** -- Answer: "How did we get here?" Write the origin story and key decisions.
+
+The gap between those three documents is your roadmap. The triangle is alive.
+
+To add the execution layer, create `ROADMAP.md`, `MILESTONE_TASKLISTS.md`, `TICKETS.md`, and `MILESTONE_1_CHECKLIST.md` from the templates in `templates/`.
 
 ---
 
@@ -133,8 +181,13 @@ The gap between those two documents is your roadmap. The triangle is alive.
 ```
 triad/
   templates/
-    vision.md          # VISION.md document template
-    spec.md            # SPEC.md document template
+    vision.md              # VISION.md -- north star template
+    spec.md                # SPEC.md -- living specification template
+    building.md            # BUILDING.md -- build journal template
+    roadmap.md             # ROADMAP.md -- execution roadmap template
+    milestone-tasklists.md # MILESTONE_TASKLISTS.md -- tactical task lists
+    tickets.md             # TICKETS.md -- agent execution board
+    milestone-checklist.md # MILESTONE_N_CHECKLIST.md -- current milestone deep-dive
   commands/
     reconcile.md       # /reconcile -- maintain the triangle
     roadmap.md         # /roadmap -- prioritized build order
